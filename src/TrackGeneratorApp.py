@@ -1,30 +1,33 @@
 import pygame
 
-from Track import CircleTrack
-from DragablePoint import DraggablePoint
+from Track import LoopTrack
+from PointsToOsmConv import PointsToOsmConverter
+
 
 class TrackGeneratorApp:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 600))
-        pygame.display.set_caption("Track Generator")
-        self.clock = pygame.time.Clock()
-        
-        # Set up other game state variables, such as player position, score, etc.
+
         self.generatorRunning = True
-        self.track = CircleTrack()
         
+        self.track = LoopTrack()
+        self.track_img = pygame.image.load("imola.pgm")
+        self.screen = pygame.display.set_mode(self.track_img.get_size())
+        pygame.display.set_caption("Track Generator")
         
     def run(self):
+        
+        a = PointsToOsmConverter([],[])
+        a.convert()
+        
         while self.generatorRunning:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.generatorRunning = False
                     return
-                # elif event.type == pygame.MOUSEBUTTONDOWN:
                 self.handleEvent(event)
-                    
-            self.screen.fill((255, 255, 255))
+                
+            self.screen.blit(self.track_img, (0, 0))
             self.drawTrack()
             pygame.display.flip()
             
@@ -34,4 +37,4 @@ class TrackGeneratorApp:
     
     def handleEvent(self, event):
         self.track.update(event)
-        pass
+        
