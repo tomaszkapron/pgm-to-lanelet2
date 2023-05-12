@@ -2,6 +2,7 @@ import pygame
 
 from Track import LoopTrack
 from PointsToOsmConv import PointsToOsmConverter
+from pygame.locals import *
 
 
 class TrackGeneratorApp:
@@ -11,8 +12,8 @@ class TrackGeneratorApp:
         self.generatorRunning = True
         
         self.track = LoopTrack()
-        self.track_img = pygame.image.load("imola.pgm")
-        self.screen = pygame.display.set_mode(self.track_img.get_size())
+        self.track_img = pygame.image.load("imola (1).pgm")
+        self.screen = pygame.display.set_mode(self.track_img.get_size(), HWSURFACE | DOUBLEBUF | RESIZABLE)
         pygame.display.set_caption("Track Generator")
         
     def run(self):

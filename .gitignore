@@ -3,3 +3,4 @@ src/__pycache__
 __pycache__
 imola.pgm
 lanelet_map.osm
+*.pgm

@@ -17,7 +17,7 @@ class PointsToOsmConverter:
         
         # TODO: set resolution based on config file
         self._resolution = 0.05
-        self._origin = (-32.7, -11.7)
+        self._origin = (-30.5, -12.9 + 1.65)
         
         # TODO: Generate a unique file name based on time?
         self._file_name = "lanelet_map.osm"
