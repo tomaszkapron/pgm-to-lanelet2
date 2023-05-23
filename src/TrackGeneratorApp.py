@@ -1,41 +1,35 @@
-import pygame
-
+import cv2
 from Track import LoopTrack
-from PointsToOsmConv import PointsToOsmConverter
-from pygame.locals import *
-
 
 class TrackGeneratorApp:
     def __init__(self):
-        pygame.init()
-
         self.generatorRunning = True
         
         self.track = LoopTrack()
-        self.track_img = pygame.image.load("imola (1).pgm")
-        self.screen = pygame.display.set_mode(self.track_img.get_size(), HWSURFACE | DOUBLEBUF | RESIZABLE)
-        pygame.display.set_caption("Track Generator")
+        self.track_img = cv2.imread("imola (1).pgm")
+        self.screen_name = "Track Generator"
+        self.screen = cv2.namedWindow(self.screen_name, cv2.WINDOW_AUTOSIZE)
+        
+        cv2.setMouseCallback(self.screen_name, self.mouseCallback)
         
     def run(self):
-        
-        a = PointsToOsmConverter([],[])
-        a.convert()
-        
         while self.generatorRunning:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.generatorRunning = False
-                    return
-                self.handleEvent(event)
-                
-            self.screen.blit(self.track_img, (0, 0))
-            self.drawTrack()
-            pygame.display.flip()
+            canvas = self.track_img.copy()
+            self.drawTrack(canvas)
+                        
+            result = cv2.bitwise_and(self.track_img, canvas)
+            cv2.imshow(self.screen_name, result)
+
+            key = chr(cv2.waitKey(1) & 0xFF)
+            self.track.handle_keyboard_input(key)
+            if key == 'q' or key == chr(27):
+                self.generatorRunning = False
             
             
-    def drawTrack(self):
-        self.track.draw(self.screen)
-    
-    def handleEvent(self, event):
-        self.track.update(event)
+    def drawTrack(self, canvas: cv2):
+        self.track.draw(canvas)
+       
+    def mouseCallback(self, event, x, y, flags, param):
+        self.track.update(event, x, y, flags, param)
+
         
