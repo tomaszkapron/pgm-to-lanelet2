@@ -15,9 +15,11 @@
 # limitations under the License.
 
 from pathlib import Path
+
 import cv2
-from yaml import safe_load
 from track_generator_app import TrackGeneratorApp
+from yaml import safe_load
+
 
 class PgmToLanelet:
 
@@ -37,10 +39,9 @@ class PgmToLanelet:
         img = cv2.imread(
             (Path(self._map_yaml_path).parent / self._map_cfg['image']).as_posix(),
             cv2.IMREAD_COLOR)
-        
+
         app = TrackGeneratorApp(img, self._map_cfg)
         app.run()
-
 
     def load_map(self) -> None:
         with open(self._map_yaml_path, 'r') as f:

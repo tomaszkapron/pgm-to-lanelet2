@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pgm_to_lanelet import PgmToLanelet
 import rclpy
 from rclpy.node import Node
-from pgm_to_lanelet import PgmToLanelet
 
 
 class PgmToLaneletNode(Node):
