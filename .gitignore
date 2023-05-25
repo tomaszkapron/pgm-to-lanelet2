@@ -1,6 +1,6 @@
-src/__pycache__
+pgm_to_lanelet/__pycache__
 .venv
 __pycache__
-imola.pgm
 lanelet_map.osm
 *.pgm
+*.osm

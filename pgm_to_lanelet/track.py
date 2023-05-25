@@ -1,7 +1,7 @@
 import cv2
 
-from DragablePoint import DraggablePoint
-from PointsToOsmConv import PointsToOsmConverter
+from dragable_point import DraggablePoint
+from points_to_osm_conv import PointsToOsmConverter
 from enum import Enum
 
 class LoopType(Enum):
@@ -9,7 +9,10 @@ class LoopType(Enum):
     OUTER = 1
 
 class LoopTrack:
-    def __init__(self):
+    def __init__(self, map_config, track_img_shape):
+        self.map_config = map_config
+        self.track_img_shape = track_img_shape
+        
         self.inner_circle = []
         self.outer_circle = []
         self.circle_type = LoopType.OUTER
@@ -53,8 +56,7 @@ class LoopTrack:
                     drag = True
                     point.update(event, x, y, flags, param)
                     break
-               
-        # break to smaller funcs
+
             if not drag and event == cv2.EVENT_LBUTTONDOWN:
                 print((x, y))
                 self.add_point(DraggablePoint((x, y), 5))
@@ -68,6 +70,6 @@ class LoopTrack:
         if key == 'x':
             self.toggle_circle_type()
         if key == 's':
-            converter = PointsToOsmConverter(self.inner_circle, self.outer_circle)
+            converter = PointsToOsmConverter(self.inner_circle, self.outer_circle, map_config=self.map_config, track_img_shape=self.track_img_shape)
             converter.convert()
 

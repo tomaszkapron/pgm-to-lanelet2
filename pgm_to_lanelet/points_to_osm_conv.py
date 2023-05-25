@@ -1,9 +1,10 @@
-from DragablePoint import DraggablePoint
+from dragable_point import DraggablePoint
 from typing import TextIO
+from pathlib import Path
 
 class PointsToOsmConverter:
     
-    def __init__(self, inner_points, outer_points):
+    def __init__(self, inner_points, outer_points, map_config, track_img_shape):
         self._inner_points = inner_points
         self._outer_points = outer_points
         self._inner_ids = []
@@ -12,22 +13,21 @@ class PointsToOsmConverter:
         self._outer_way_id = 1001
         self._relation_id = 1002
         
-        # TODO: add id generator
         self._id = 1
         
-        # TODO: set resolution based on config file
-        self._resolution = 0.05
-        self._origin = (-30.5, -12.9 + 1.65)
+        self._resolution = map_config['resolution']
+        origin = map_config['origin']
+        self._origin = (origin[0], origin[1])
+        self._track_img_shape = track_img_shape
         
-        # TODO: Generate a unique file name based on time?
         self._file_name = "lanelet_map.osm"
+        self._output_dir = Path(__file__).parent.parent / "data"
         
     def reset_converter(self):
         pass
     
     def convert(self):
-        # TODO: Add logic for creating file, and handling errors
-        with open(self._file_name, 'w') as f:
+        with open(self._output_dir / Path(self._file_name), 'w') as f:
             self._write_header(f)
             self._write_nodes(f)
             self._write_ways(f)
@@ -83,7 +83,7 @@ class PointsToOsmConverter:
         
         return node
     
-    def _write_way(self, points_id_list:list, way_id:int) -> str:
+    def _write_way(self, points_id_list: list, way_id: int) -> str:
         if len(points_id_list) < 2:
             return ""
         
@@ -101,8 +101,6 @@ class PointsToOsmConverter:
         return way_text
     
     def _pixels_to_meters(self, point: DraggablePoint) -> tuple:
-        # x = self._origin[0] + point.pos[0] * self._resolution
-        # y = self._origin[1] + point.pos[1] * self._resolution
         x = point.pos[0] * self._resolution + self._origin[0]
-        y = (point.pos[1] * self._resolution * -1) + self._origin[1] + 1186 * self._resolution
+        y = (point.pos[1] * self._resolution * -1) + self._origin[1] + self._track_img_shape[1] * self._resolution
         return x, y

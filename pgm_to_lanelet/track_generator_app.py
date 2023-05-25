@@ -1,15 +1,14 @@
 import cv2
-from Track import LoopTrack
+from track import LoopTrack
 
 class TrackGeneratorApp:
-    def __init__(self):
+    def __init__(self, track_img, map_config):
         self.generatorRunning = True
         
-        self.track = LoopTrack()
-        self.track_img = cv2.imread("imola (1).pgm")
+        self.track = LoopTrack(map_config=map_config, track_img_shape=track_img.shape)
+        self.track_img = track_img
         self.screen_name = "Track Generator"
         self.screen = cv2.namedWindow(self.screen_name, cv2.WINDOW_AUTOSIZE)
-        
         cv2.setMouseCallback(self.screen_name, self.mouseCallback)
         
     def run(self):
@@ -22,8 +21,6 @@ class TrackGeneratorApp:
 
             key = chr(cv2.waitKey(1) & 0xFF)
             self.track.handle_keyboard_input(key)
-            if key == 'q' or key == chr(27):
-                self.generatorRunning = False
             
             
     def drawTrack(self, canvas: cv2):
