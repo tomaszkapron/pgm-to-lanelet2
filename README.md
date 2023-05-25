@@ -39,6 +39,17 @@ ros2 launch pgm_to_lanelet pgm_to_lanelet.launch.py map_yaml_path:=path/to/map.y
 | `point_size`    | int    | GUI point size.                |
 
 
+## User Interface
+
+| key / mouse button            | Description                  |
+| ---------------      | ------------------------------        |
+| `z`                  | remove last drawn point               |
+| `x`                  | change between inner and outer loop   |
+| `s`                  | save drawn map to .osm file           |
+| `left mouse button`  | draw point                            |
+| `mouse scroll`       | zoom in/out the map                   |
+| `ctrl + arrows`      | move the image while beeing zoomed in |
+
 ## References / External links
 <!-- Optional -->
 * [Lanelet2](https://github.com/fzi-forschungszentrum-informatik/Lanelet2)
