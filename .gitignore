@@ -2,5 +2,4 @@ pgm_to_lanelet/__pycache__
 .venv
 __pycache__
 lanelet_map.osm
-*.pgm
 *.osm
